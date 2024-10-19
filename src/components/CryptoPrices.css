@@ -1,0 +1,42 @@
+.crypto-section {
+  width: 100%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.crypto-list {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  justify-content: center; /* Center items horizontally */
+  margin-top: 20px;
+
+}
+.crypto-logo{
+  width: 50px;
+}
+.crypto-desc{
+  font-weight: bold;
+}
+
+.crypto {
+  width: 30%; /* 3 items per row */
+  max-width: 200px; /* Optional max-width for better readability */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin: 10px; /* Space around each crypto item */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.crypto:last-child {
+  width: 45%; /* Last item to take up more space */
+}
+
+.crypto:hover {
+  transform: scale(1.02);
+}
