@@ -1,42 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import Loader from './Loader';
 import Error from './Error';
+import './Weather.css';
 
 const Weather = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentLocationWeather, setCurrentLocationWeather] = useState(null);
 
-  // Coordinates for some common cities
-  const cities = [
-    { name: 'New York', lat: 40.7128, lon: -74.0060 },
-    { name: 'London', lat: 51.5074, lon: -0.1278 },
-    { name: 'Tokyo', lat: 35.6762, lon: 139.6503 },
-    { name: 'Paris', lat: 48.8566, lon: 2.3522 },
-    { name: 'Sydney', lat: -33.8688, lon: 151.2093 }
-  ];
+  const cities = ['New York', 'London', 'Paris', 'Tokyo', 'Sydney'];
 
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const apiKey = '8dad3db309e50de33c8cdefbe69cec74';
+        const apiKey = 'f88b889cf5c304ef8f9a8a87d01a0dc6';
 
-        const requests = cities.map(city => 
-          fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${city.lat}&lon=${city.lon}&appid=${apiKey}&units=metric`)
+        const requests = cities.map(city =>
+          fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
         );
-
+        
         const responses = await Promise.all(requests);
         const data = await Promise.all(responses.map(res => res.json()));
 
-        const cityWeatherData = data.map((weather, index) => ({
-          cityName: cities[index].name,
-          timezone: weather.timezone,
-          temp: weather.current.temp,
-          feels_like: weather.current.feels_like,
-          humidity: weather.current.humidity,
-          description: weather.current.weather[0].description,
-          wind_speed: weather.current.wind_speed,
-          clouds: weather.current.clouds
+        const cityWeatherData = data.map(weather => ({
+          cityName: weather.name,
+          temp: weather.main.temp,
+          feels_like: weather.main.feels_like,
+          humidity: weather.main.humidity,
+          description: weather.weather[0].description,
+          wind_speed: weather.wind.speed,
+          clouds: weather.clouds.all,
+          icon: weather.weather[0].icon // Weather icon
         }));
 
         setWeatherData(cityWeatherData);
@@ -46,6 +41,41 @@ const Weather = () => {
         setLoading(false);
       }
     };
+
+    const fetchCurrentLocationWeather = async (latitude, longitude) => {
+      try {
+        const apiKey = 'f88b889cf5c304ef8f9a8a87d01a0dc6';
+        const response = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
+        );
+        const data = await response.json();
+        const currentLocationWeatherData = {
+          cityName: data.name,
+          temp: data.main.temp,
+          feels_like: data.main.feels_like,
+          humidity: data.main.humidity,
+          description: data.weather[0].description,
+          wind_speed: data.wind.speed,
+          clouds: data.clouds.all,
+          icon: data.weather[0].icon
+        };
+
+        setCurrentLocationWeather(currentLocationWeatherData);
+      } catch (error) {
+        setError('Failed to fetch current location weather data.');
+      }
+    };
+
+    // Get current location weather
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        fetchCurrentLocationWeather(latitude, longitude);
+      },
+      () => {
+        setError('Failed to get your current location.');
+      }
+    );
 
     fetchWeatherData();
   }, []);
@@ -58,17 +88,52 @@ const Weather = () => {
       ) : error ? (
         <Error message={error} />
       ) : (
-        weatherData.map((city, index) => (
-          <div key={index} className="city-weather">
-            <h3>Current Weather in {city.cityName}</h3>
-            <p>Temperature: {city.temp}°C</p>
-            <p>Feels Like: {city.feels_like}°C</p>
-            <p>Humidity: {city.humidity}%</p>
-            <p>Weather Condition: {city.description}</p>
-            <p>Wind Speed: {city.wind_speed} m/s</p>
-            <p>Clouds: {city.clouds}%</p>
-          </div>
-        ))
+        <div className="weather-grid">
+          {currentLocationWeather && (
+            <div className="city-weather current-location">
+              <div className="weather-main">
+                <img
+                  className="weather-icon"
+                  src={`http://openweathermap.org/img/wn/${currentLocationWeather.icon}@4x.png`}
+                  alt="Weather icon"
+                />
+                <div className="weather-info">
+                  <h3>{currentLocationWeather.cityName}</h3>
+                  <p className="temperature">{Math.round(currentLocationWeather.temp - 273.15)}°C</p>
+                  <p>{currentLocationWeather.description}</p>
+                </div>
+              </div>
+              <div className="weather-details">
+                <p>Feels Like: {Math.round(currentLocationWeather.feels_like - 273.15)}°C</p>
+                <p>Humidity: {currentLocationWeather.humidity}%</p>
+                <p>Wind: {currentLocationWeather.wind_speed} m/s</p>
+                <p>Clouds: {currentLocationWeather.clouds}%</p>
+              </div>
+            </div>
+          )}
+          {weatherData.map((city, index) => (
+            <div key={index} className="city-weather">
+              <div className="weather-main">
+                <img
+                  className="weather-icon"
+                  src={`http://openweathermap.org/img/wn/${city.icon}@4x.png`}
+                  alt="Weather icon"
+                />
+                <div className="weather-info">
+                  <h3>{city.cityName}</h3>
+                  <p className="temperature">{Math.round(city.temp - 273.15)}°C</p>
+                  <p>{city.description}</p>
+                </div>
+              </div>
+              <div className="weather-details">
+                <p>Feels Like: {Math.round(city.feels_like - 273.15)}°C</p>
+                <p>Humidity: {city.humidity}%</p>
+                <p>Wind: {city.wind_speed} m/s</p>
+                <p>Clouds: {city.clouds}%</p>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
