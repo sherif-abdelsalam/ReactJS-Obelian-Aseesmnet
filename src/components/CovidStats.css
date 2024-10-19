@@ -60,6 +60,7 @@
   }
   
   .stats-row button{
+    color: #2c3e50;
     font-size: large;
     font-weight: bolder;
     background: none;

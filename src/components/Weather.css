@@ -74,8 +74,71 @@
   .weather-details p {
     margin: 0;
   }
-  
+ 
   .city-weather:hover {
+    background-color: #e4e4e4;
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
   }
-  
+
+/* /////////////////////////////////////// */
+
+.forecast-section {
+    background-color: #f9f9f9;
+    padding: 20px 50px;
+    border-radius: 10px;
+    margin: 20px auto;
+    color: #333; /* Dark text for forecast details */
+}
+
+.forecast-section h3 {
+    text-align: center;
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.forecast-day {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.forecast-date {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.forecast-details {
+    margin-top: 10px;
+    color: #666;
+    font-size: 1rem;
+}
+
+.forecast-item:hover {
+    background-color: #e4e4e4;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
