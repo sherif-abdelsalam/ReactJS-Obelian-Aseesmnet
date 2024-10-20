@@ -11,8 +11,7 @@ const Weather = () => {
   const [selectedCity, setSelectedCity] = useState(null);
   const [forecastData, setForecastData] = useState([]);
   const [view, setView] = useState('weather'); // 'weather' or 'forecast'
-
-  const cities = ['New York', 'London', 'Paris', 'Tokyo', 'Sydney'];
+  const [cities, setCities] = useState(['New York', 'Tanta', 'Paris', 'Tokyo', 'Zagazig']); // Use state to manage cities dynamically
   const apiKey = 'f88b889cf5c304ef8f9a8a87d01a0dc6';
 
   // Fetch current location weather
@@ -23,7 +22,7 @@ const Weather = () => {
           `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
         );
         const data = await response.json();
-        setCurrentLocationWeather({
+        const currentWeather = {
           cityName: data.name,
           temp: data.main.temp,
           feels_like: data.main.feels_like,
@@ -32,6 +31,15 @@ const Weather = () => {
           wind_speed: data.wind.speed,
           clouds: data.clouds.all,
           icon: data.weather[0].icon,
+        };
+        setCurrentLocationWeather(currentWeather);
+        console.log(cities);
+        // Add current location city to the cities array if not already included
+        setCities((prevCities) => {
+          if (!prevCities.includes(currentWeather.cityName)) {
+            return [currentWeather.cityName, ...prevCities];
+          }
+          return prevCities;
         });
       } catch (error) {
         setError('Failed to fetch current location weather.');
@@ -44,14 +52,14 @@ const Weather = () => {
           const { latitude, longitude } = position.coords;
           fetchCurrentLocationWeather(latitude, longitude);
         },
-        (error) => {
+        () => {
           setError('Location access denied.');
         }
       );
     } else {
       setError('Geolocation is not supported by this browser.');
     }
-  }, []);
+  }, [apiKey]);
 
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -85,7 +93,7 @@ const Weather = () => {
     };
 
     fetchWeatherData();
-  }, []);
+  }, [cities, apiKey]);
 
   // Fetch 5-day forecast for the selected city
   const fetchForecastData = async (city) => {
@@ -130,31 +138,6 @@ const Weather = () => {
         <>
           {view === 'weather' ? (
             <div className="weather-grid">
-
-                  {currentLocationWeather && (
-                  <div className="city-weather">
-                    <div className="weather-main">
-                      <img
-                        className="weather-icon"
-                        src={`http://openweathermap.org/img/wn/${currentLocationWeather.icon}@4x.png`}
-                        alt="Weather icon"
-                      />
-                      <div className="weather-info">
-                        <h3>{currentLocationWeather.cityName}</h3>
-                        <p className="temperature">
-                          {Math.round(currentLocationWeather.temp - 273.15)}°C
-                        </p>
-                        <p>{currentLocationWeather.description}</p>
-                      </div>
-                    </div>
-                    <div className="weather-details">
-                      <p>Feels Like: {Math.round(currentLocationWeather.feels_like - 273.15)}°C</p>
-                      <p>Humidity: {currentLocationWeather.humidity}%</p>
-                      <p>Wind: {currentLocationWeather.wind_speed} m/s</p>
-                      <p>Clouds: {currentLocationWeather.clouds}%</p>
-                    </div>
-                  </div>
-                )}
 
               {weatherData.map((city, index) => (
                 <div
@@ -209,7 +192,7 @@ const Weather = () => {
                         <p>{day.description}</p>
                       </div>
                     </div>
-                    <div className="forecast-details">
+                    <div className="  details">
                       <p>Feels Like: {Math.round(day.feels_like - 273.15)}°C</p>
                       <p>Humidity: {day.humidity}%</p>
                       <p>Wind: {day.wind_speed} m/s</p>

@@ -13,22 +13,6 @@ body {
   text-align: center;
 }
 
-.welcome-screen {
-  background-color: #4CAF50;
-  color: white;
-  padding: 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
 .app-header {
   background-color: #282c34;
   padding: 20px;
@@ -38,14 +22,14 @@ body {
 .nav-links {
   display: flex;
   justify-content: center;
-  margin: 10px 0;
+  margin: 20px;   
 }
 
 .nav-links button {
   background-color: #61dafb;
   color: #282c34;
-  border: none;
-  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
   padding: 10px 20px;
   margin: 0 10px;
   cursor: pointer;

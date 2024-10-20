@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="App">
       <header className="app-header">
-        <h1>Live Dashboard</h1>
+        <h1>Dashboard</h1>
         <nav className="nav-links">
           <button onClick={() => scrollToSection(weatherRef)}>Weather Information</button>
           <button onClick={() => scrollToSection(cryptoRef)}>Cryptocurrency Prices</button>
