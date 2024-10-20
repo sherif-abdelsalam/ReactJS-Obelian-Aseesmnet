@@ -11,7 +11,7 @@ const Weather = () => {
   const [selectedCity, setSelectedCity] = useState(null);
   const [forecastData, setForecastData] = useState([]);
   const [view, setView] = useState('weather'); // 'weather' or 'forecast'
-  const [cities, setCities] = useState(['Zagazig','Tanta', 'New York', 'Paris', 'Tokyo']); // Use state to manage cities dynamically
+  const [cities, setCities] = useState(['Cairo','London', 'New York', 'Paris', 'Tokyo']); // Use state to manage cities dynamically
   const apiKey = 'f88b889cf5c304ef8f9a8a87d01a0dc6';
 
   // Fetch current location weather
