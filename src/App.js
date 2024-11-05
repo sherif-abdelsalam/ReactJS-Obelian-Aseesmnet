@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import CryptoPrices from './components/CryptoPrices';
 import Weather from './components/Weather';
@@ -19,6 +20,7 @@ function App() {
 
   return (
     <div className="App">
+      
       <header className="app-header">
         <h1>Dashboard</h1>
         <nav className="nav-links">
@@ -26,18 +28,13 @@ function App() {
           <button onClick={() => scrollToSection(cryptoRef)}>Cryptocurrency Prices</button>
           <button onClick={() => scrollToSection(covidRef)}>COVID-19 Statistics</button>
         </nav>
+
       </header>
+
       <div className="content">
-        {/* Attach refs to each component */}
-        <div ref={weatherRef}>
-          <Weather />
-        </div>
-        <div ref={cryptoRef}>
-          <CryptoPrices />
-        </div>
-        <div ref={covidRef}>
-          <CovidStats />
-        </div>
+        <div ref={weatherRef}> <Weather /> </div>
+        <div ref={cryptoRef}> <CryptoPrices /> </div>
+        <div ref={covidRef}> <CovidStats /> </div>
       </div>
     </div>
   );

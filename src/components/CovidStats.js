@@ -1,35 +1,31 @@
-// src/components/CovidStats.js
+
 import React, { useEffect, useState } from 'react';
-import './CovidStats.css'; // Import CSS file for styling
+import '../styles/CovidStats.css'; 
 
 const CovidStats = () => {
   const [stats, setStats] = useState(null);
   const [country, setCountry] = useState('global'); // Default to global stats
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  // Function to fetch COVID-19 data
-  const fetchCovidStats = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const response = await fetch(
-        country === 'global'
-          ? 'https://disease.sh/v3/covid-19/all'
-          : `https://disease.sh/v3/covid-19/countries/${country}`
-      );
-      if (!response.ok) throw new Error('Failed to fetch data');
-      const data = await response.json();
-      setStats(data);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
   useEffect(() => {
+    const fetchCovidStats = async () => {
+      try {
+        const response = await fetch(
+          country === 'global'
+            ? 'https://disease.sh/v3/covid-19/all'
+            : `https://disease.sh/v3/covid-19/countries/${country}`
+        );
+        if (!response.ok) throw new Error('Failed to fetch data');
+        const data = await response.json();
+        
+        setStats(data);
+  
+      } catch (error) {
+        console.log(error.message);
+      }
+    };  
+
     fetchCovidStats();
+
   }, [country]);
 
   const handleCountryChange = (event) => {
@@ -297,8 +293,6 @@ const CovidStats = () => {
           {/* Add more countries as needed */}
         </select>
       </div>
-      {loading && <p>Loading...</p>}
-      {error && <p className="error">{error}</p>}
       {stats && (
         <div className="stats">
           <h3>{country === 'global' ? 'Global' : stats.country} Stats</h3>

@@ -57,6 +57,7 @@
     display: flex; /* Use flexbox for horizontal layout */
     justify-content: space-around; /* Space items evenly */
     margin-top: 10px; /* Add some space above the row */
+    flex-wrap: wrap;
   }
   
   .stats-row button{
