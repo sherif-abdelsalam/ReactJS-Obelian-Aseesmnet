@@ -24,7 +24,7 @@ export const CityForcast = (props) => {
 
                 <p className="forecast-date">{day.date}</p>
                 <p className="forecast-temp"> {Math.round(day.temp - 273.15)}°C </p>
-                <p>{day.description}</p>
+                <p className="forecast-desc">{day.description}</p>
 
             </div>
           </div>
